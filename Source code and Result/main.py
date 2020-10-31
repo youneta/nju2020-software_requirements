@@ -1,25 +1,6 @@
 from lxml import etree
 import requests
 
-
-# 根据关键词获取项目列表
-def get_repos_list(key_words):
-    # 初始化列表
-    repos_list = []
-    # 默认
-    for i in range(1, 100):
-        url = 'https://github.com/search?p=' + str(i) + '&q=' + key_words + '&type=repositories'
-        response = requests.get(url)
-        # 获取页面源码
-        page_source = response.text
-        # print(page_source)
-        tree = etree.HTML(page_source)
-        # 获取项目超链接
-        arr = tree.xpath('//*[@class="f4 text-normal"]/a/@href')
-        repos_list += arr
-        return repos_list
-
-
 # 获取一个项目的issues列表
 def get_issues_list(repo_name):
     issues_list = []
@@ -35,7 +16,6 @@ def get_issues_list(repo_name):
         number = '0'
     else:
         number = number[0].text
-    # 超过1K就爬取1000条（够用了）
     if number.isdigit():
         number = int(number)
     else:
